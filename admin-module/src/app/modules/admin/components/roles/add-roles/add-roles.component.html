@@ -1,0 +1,46 @@
+<form [formGroup]="roleForm">
+    <div class="slide-form">
+        <div class="slide-form-header">
+            <button class="slide-form-close fade-in" (click)="dismiss()">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <div class="slide-form-title">{{addRoleTitle}}</div>
+        </div>
+        <div class="slide-form-body">
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-floating mb-4">
+                        <!--Role Name InputField-->
+                        <input type="text" class="form-control" placeholder="Role Name" formControlName="roleName"
+                            maxlength="50">
+                        <label class="mandatory">Role Name</label>
+                        <span class="text-error"
+                            *ngIf="roleForm.controls['roleName'].touched && roleForm.controls['roleName'].errors?.['required']">
+                            Required.
+                        </span>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-floating mb-4">
+                        <!--Role Acronym InputField-->
+                        <input type="text" class="form-control" placeholder="Role Acronym" formControlName="roleAcronym" 
+                        maxlength="4" [VnaBmsDirective]="'minimumAndMaximumLength'">
+                        <label class="mandatory">Role Acronym</label>
+                        <span class="text-error"
+                            *ngIf="roleForm.controls['roleAcronym'].touched && roleForm.controls['roleAcronym'].errors?.['required']">
+                            Required.
+                        </span>
+                        <span class="text-error" *ngIf="roleForm.controls['roleAcronym'].hasError('invalidLength')">
+                            Role Acronym length must be minimum 3 characters .
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slide-form-footer">
+            <button type="button" class="slide-form-btn fade-in-up-2" (click)="clear()">{{clearButton}}</button>
+            <button type="submit" class="slide-form-btn active fade-in-up-1"
+                (click)="saveRole(roleForm.valid)">{{saveButton}}</button>
+        </div>
+    </div>
+</form>

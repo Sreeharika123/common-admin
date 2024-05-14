@@ -1,0 +1,64 @@
+<div class="bms-form">
+    <div class="bms-form-header">
+        <div class="bms-form-header-left">
+            <div class="bms-form-header-title">{{screenTitle}}</div>
+        </div>
+        <div class="bms-form-header-right">
+            <button class="bms-form-header-btn fade-in-right" value="Open"
+                (click)="addUser()" [disabled]="!authService.writePermission">Add {{screenTitle}}</button>
+        </div>
+    </div>
+    <div class="bms-form-body">
+        <app-vna-bms-common-stats [stats]="statsData" [displayHeaders]="displayHeaders"></app-vna-bms-common-stats>
+
+        <div class="filter-block">
+            <form [formGroup]="userInformationSearch">
+                <div class="row fade-in">
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input class="form-control" type="text" placeholder="email address"
+                                formControlName="emailAddress" [VnaBmsDirective]="'email'" />
+
+                            <span class="text-error"
+                                *ngIf="!showError('emailAddress') && userInformationSearch.controls['emailAddress'].hasError ('invalidEmail')">
+                                Invalid email.
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="form-group">
+                            <label>Role</label>
+                            <select class="form-select" formControlName="roleId">
+                                <option value="">-- Select role --</option>
+                                <option *ngFor="let role of roleList" [ngValue]="role.roleID">{{role.roleName}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select class="form-select" formControlName="isActive">
+                                <option *ngFor="let isActive of isActiveList" [ngValue]="isActive.isActiveId">
+                                    {{isActive.isActive}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="form-btn-group-md">
+                            <button class="form-btn" (click)="clearUserData()">{{clearButtonTitle}}</button>
+                            <button class="form-btn active" (click)="searchUserData()">{{searchButtonTitle}}</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="d-flex justify-content-end mb-2">
+            <app-common-export-dropdown (exportOperation)="exportDropDownOperation($event)">
+            </app-common-export-dropdown>
+        </div>
+        <app-vna-bms-common-grid [gridData]="screenData" [displayedColumns]="displayedColumns" [showStatus]="showStatus"
+            [showEdit]="showEdit" (operation)="checkOperation($event)" [displayTitles]="displayTitles"
+            [recordsLength]="recordsPaginationLength"></app-vna-bms-common-grid>
+    </div>
+</div>

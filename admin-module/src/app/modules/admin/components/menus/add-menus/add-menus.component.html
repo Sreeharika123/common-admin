@@ -1,0 +1,98 @@
+<form [formGroup]="menusForm">
+  <div class="slide-form">
+    <div class="slide-form-header">
+      <button class="slide-form-close fade-in" (click)="dismiss()">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+      <div class="slide-form-title">{{addMenuTitle}}</div>
+    </div>
+    <div class="slide-form-body">
+      <div class="row">
+        <div class="col-12">
+          <div class="check-style-3 mb-4">
+            <input type="checkbox" formControlName="isModule" />
+            <label class="switcher_checkbox">
+              <span class="checker">
+                <span class="checker_short-line"></span>
+                <span class="checker_long-line"></span>
+              </span>
+              <span class="checker-text">Is Module</span>
+            </label>
+            <span class="text-error" *ngIf="showError('isModule')">Required</span>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="form-floating mb-4">
+            <input type="text" class="form-control" placeholder="Menu Code" formControlName="menuCode" maxlength="20" />
+            <label class="mandatory">Menu Code</label>
+            <span class="text-error" *ngIf="showError('menuCode')">Required</span>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="form-floating mb-4">
+            <input type="text" class="form-control" placeholder="Menu Title" formControlName="menuTitle"
+              maxlength="100" />
+            <label class="mandatory">Menu Title</label>
+            <span class="text-error" *ngIf="showError('menuTitle')">Required</span>
+          </div>
+        </div>
+        <div class="col-12" *ngIf="!menusForm.value.isModule">
+          <div class="form-floating mb-4">
+            <select formControlName="menuParentId" class="form-select">
+              <option value="">---Select---</option>
+              <option *ngFor="let menu of parentMenuList" [ngValue]="menu.menuID">
+                {{ menu.menuTitle }}
+              </option>
+            </select>
+            <label class="mandatory">Parent Menu</label>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="form-floating mb-4">
+            <select formControlName="menuOrderId" class="form-select">
+              <option value="">---Select---</option>
+              <option *ngFor="let order of menuOrderList" [ngValue]="order">
+                {{ order }}
+              </option>
+            </select>
+            <label class="mandatory">Menu Order</label>
+            <span class="text-error" *ngIf="showError('menuOrderId')">Required</span>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="form-floating mb-4">
+            <input type="text" class="form-control" placeholder="CSS Class" formControlName="cssClass"
+              maxlength="100" />
+            <label class="mandatory">CSS Class</label>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="form-floating mb-4">
+            <input type="text" class="form-control" placeholder="Tool Tip" formControlName="menuTooltip"
+              maxlength="100" />
+            <label class="mandatory">Tool Tip</label>
+            <span class="text-error" *ngIf="showError('menuTooltip')">Required</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="mb-4">
+          <div class="form-floating">
+            <input type="text" class="form-control" placeholder="Route Navigation" formControlName="routeNavigation"
+              maxlength="250" />
+            <label class="mandatory">Route Navigation</label>
+          </div>
+          <span class="text-error" *ngIf="showError('routeNavigation')">Required</span>
+        </div>
+      </div>
+    </div>
+    <div class="slide-form-footer">
+      <button type="submit" class="slide-form-btn active fade-in-up-1" (click)="saveOrUpdateMenu(menusForm.valid)">
+        {{ saveOrUpdateButton }}
+      </button>
+      <!-- <button type="button" tabindex="12" class="add-stock-btn" (click)="clear()">
+                {{ clearOrCancelButton }}
+              </button> -->
+    </div>
+  </div>
+</form>

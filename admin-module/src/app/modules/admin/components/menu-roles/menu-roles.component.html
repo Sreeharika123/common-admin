@@ -1,0 +1,121 @@
+<div class="bms-form">
+  <div class="bms-form-header">
+    <div class="bms-form-header-left">
+      <div class="bms-form-header-title">{{screenTitle}}</div>
+    </div>
+  </div>
+
+  <div class="bms-form-body">
+    <form class="filter-block" [formGroup]="menuRolesForm">
+      <div class="row fade-in">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+          <div class="form-group">
+            <label class="">Role :</label>
+            <select class="form-select" formControlName="roles" name="roles" id="roles"
+              (change)="onRoleChange(menuRolesForm.controls['roles'].value)">
+              <option value="">---Select---</option>
+              <option *ngFor="let roles of userRolesList" [ngValue]="roles.roleID">{{roles.roleName}}</option>
+            </select>
+            <span class="text-error" *ngIf="showError('roles')">Required.</span>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-4">
+          <div class="form-btn-group-sm">
+            <button type="button" class="form-btn" (click)="expandAll()">
+              <span class="material-symbols-outlined">view_in_ar</span> Expand ALL
+            </button>
+            <button type="button" class="form-btn" (click)="collapseAll()">
+              <span class="material-symbols-outlined">hide</span> Collapse ALL
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="custom-tree-grid mb-3 fade-in-up-1">
+      <table>
+        <tr>
+          <th>Menu Roles</th>
+          <th [width]="120">Read</th>
+          <th [width]="120">Write</th>
+          <th [width]="120">Modify</th>
+          <th [width]="120">Delete</th>
+        </tr>
+        <tr>
+          <td colspan="5" class="p-0">
+            <div class="title-row" *ngFor="let item of menusList; index as i">
+              <div class="title-row-label">
+                <span class="" *ngIf="item.children" [ngClass]="item.expand ? 'minus-square' : 'plus-square'"
+                  (click)="item.expand = !item.expand"></span>
+                <div class="custom-tee-grid-toggle">
+                  <span *ngIf="!item.children" class="material-symbols-outlined">
+                    chevron_right
+                  </span>
+                  <span *ngIf="item.children" class="material-symbols-outlined" (click)="item.expand = !item.expand">
+                    {{ !item.expand ? 'add_box':'indeterminate_check_box'}}
+                  </span>
+                  <span *ngIf="!item.children" [ngClass]="'caret-right'"></span>
+                </div>
+
+                <label class="check-style-1 me-3">
+                  <input type="checkbox" [checked]="checkMinusSquare(item)||item.checked" (click)="checkParent(item)">
+                  <span class="check-style-1-checkmark"></span>
+                </label>
+
+                <span class="" (click)="item.expand = !item.expand">{{item.menuTitle}}</span>
+              </div>
+              <ul class="list-table" [class.d-none]="!item.expand">
+                <li *ngFor="let child of item.children; index as j">
+                  <table>
+                    <tr>
+                      <td class="pt-2 pb-2">
+
+                        <label class="check-style-1 me-3">
+                          <input type="checkbox" (click)="checkChild(child, item)" [checked]="child.checked">
+                          <span class="check-style-1-checkmark"></span>
+                          <span class="check-style-1-text ps-3"
+                            (click)="checkChild(child, item)">{{child.menuTitle}}</span>
+                        </label>
+                      </td>
+                      <td [width]="120" class="text-center">
+                        <label class="check-style-1 ms-2">
+                          <input class="" type="checkbox" id="readPermission" [(ngModel)]="child.readPermission"
+                            (change)="menuChildPermissionsChange('read',item,child)">
+                          <span class="check-style-1-checkmark"></span>
+                        </label>
+                      </td>
+                      <td [width]="120" class="text-center">
+                        <label class="check-style-1 ms-3">
+                          <input class="" type="checkbox" id="writePermission" [(ngModel)]="child.writePermission"
+                            (change)="menuChildPermissionsChange('write',item,child)">
+                          <span class="check-style-1-checkmark"></span>
+                        </label>
+                      </td>
+                      <td [width]="120" class="text-center">
+                        <label class="check-style-1 ms-3">
+                          <input class="" type="checkbox" id="modifyPermission" [(ngModel)]="child.modifyPermission"
+                            (change)="menuChildPermissionsChange('modify',item,child)">
+                          <span class="check-style-1-checkmark"></span>
+                        </label>
+                      </td>
+                      <td [width]="110" class="text-center">
+                        <label class="check-style-1 ms-3">
+                          <input class="" type="checkbox" id="deletePermission" [(ngModel)]="child.deletePermission"
+                            (change)="menuChildPermissionsChange('delete',item,child)">
+                          <span class="check-style-1-checkmark"></span>
+                        </label>
+                      </td>
+                    </tr>
+                  </table>
+                </li>
+              </ul>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="btn-box-right fade-in-up-2">
+      <button type="button" class="form-btn" (click)="clearMenuRolesForm()">Clear</button>
+      <button type="button" class="form-btn active" (click)="saveMenuRoles()">Submit</button>
+    </div>
+  </div>
+</div>

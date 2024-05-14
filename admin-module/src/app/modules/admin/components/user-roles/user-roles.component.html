@@ -1,0 +1,45 @@
+<div class="bms-form">
+    <div class="bms-form-header">
+        <div class="bms-form-header-left">
+            <div class="bms-form-header-title">{{screenTitle}}</div>
+        </div>
+        <div class="bms-form-header-right"></div>
+    </div>
+    <div class="bms-form-body">
+        <form [formGroup]="userRolesForm">
+            <div class="filter-block">
+                <div class="row mt-2 fade-in">
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="mb-3">
+                            <input id="typeahead-focus" placeholder="Select User" type="text" class="form-control"
+                                [ngbTypeahead]="search" formControlName="userName"
+                                (click)="click$.next($any($event).target.value)" (selectItem)="getUserRoles($event)"
+                                #roles="ngbTypeahead" />
+                            <span class="text-error"
+                                *ngIf="userRolesForm.controls['userName'].touched && userRolesForm.controls['userName'].errors?.['required']">Required.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="form-control-group pt-2 mb-3 fade-in-up">
+            <div class="row mt-2">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3" *ngFor="let role of rolesList">
+                    <div class="check-style-2 mb-3 ">
+                        <input type="checkbox" [disabled]="role.disable" [(ngModel)]="role.selected" />
+                        <label class="switcher_checkbox">
+                            <span class="checker">
+                                <span class="checker_short-line"></span>
+                                <span class="checker_long-line"></span>
+                            </span>
+                            <span class="checker-text">{{ role.roleName}}</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="btn-box-right fade-in-up-1">
+            <button class="form-btn" (click)="clearUserRoles()">Clear</button>
+            <button class="form-btn active" (click)="saveUserRoles()">Save</button>
+        </div>
+    </div>

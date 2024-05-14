@@ -1,0 +1,131 @@
+<form [formGroup]="userForm">
+    <div class="slide-form">
+        <div class="slide-form-header">
+            <button class="slide-form-close fade-in" (click)="dismiss()">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <div class="slide-form-header-left">
+                <div class="slide-form-title">{{addUserTitle}}</div>
+            </div>
+        </div>
+        <div class="slide-form-body">
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-floating mb-4">
+                        <select class="form-select" formControlName="roleID" (change)="roleChange(userForm.controls['roleID'].value)">
+                            <option value="">---Select---</option>
+                            <option *ngFor="let role of roleList" [ngValue]="role.roleID">{{role.roleName}}</option>
+                        </select>
+                         <label class="mandatory">Role :</label>
+                        <span class="text-error" *ngIf="showError('roleID')">{{required}}</span>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" placeholder="Email" formControlName="emailAddress"
+                            maxlength="200" [VnaBmsDirective]="'email'">
+                        <label class="mandatory">Email :</label>
+                        <span class="text-error" *ngIf="showError('emailAddress')">{{required}}</span>
+                        <span class="text-error"
+                            *ngIf="!showError('emailAddress') && userForm.controls['emailAddress'].hasError ('invalidEmail')">
+                            Invalid email.
+                        </span>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-floating mb-4">
+                        <input type="text" class="form-control" placeholder="First Name" formControlName="firstName"
+                            maxlength="50" [VnaBmsDirective]="'alphabetsWithWhiteSpace'">
+                        <label class="mandatory">First Name :</label>
+                        <span class="text-error" *ngIf="showError('firstName')">{{required}}</span>
+                        <span class="text-error"
+                            *ngIf="!showError('firstName') && userForm.controls['firstName'].hasError ('invalidAlphabetsWithWhiteSpace')">
+                            Accepts only alphabet's.
+                        </span>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-floating mb-4">
+                        <input type="text" class="form-control" placeholder="Surname" formControlName="surname"
+                            maxlength="50" [VnaBmsDirective]="'alphabetsWithWhiteSpace'">
+                        <label class="mandatory">Surname :</label>
+                        <span class="text-error" *ngIf="showError('surname')">{{required}}</span>
+                        <span class="text-error"
+                            *ngIf="!showError('surname') && userForm.controls['surname'].hasError ('invalidAlphabetsWithWhiteSpace')">
+                            Accepts only alphabet's.
+                        </span>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-floating mb-4">
+                        <select formControlName="gender" class="form-select">
+                            <option *ngFor="let geneder of genderList" [ngValue]="geneder.genderId">
+                                {{geneder.genderName}}</option>
+                        </select>
+                        <label class="mandatory">Gender :</label>
+                        <span class="text-error" *ngIf="showError('gender')">{{required}}</span>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-floating mb-4">
+                        <input type="text" class="form-control" [VnaBmsDirective]="'numbersOnly'" maxlength="10"
+                            placeholder="Enter" formControlName="cellNumber">
+                        <label class="mandatory">Cell Number :</label>
+                        <span class="text-error" *ngIf="showError('cellNumber')">{{required}}</span>
+                        <span class="text-error"
+                            *ngIf="!showError('cellNumber') && userForm.controls['cellNumber'].hasError('invalidNumber')">
+                            Accepts number's only.
+                        </span>
+                        <span class="text-error"
+                            *ngIf="!showError('cellNumber') && userForm.controls['cellNumber'].hasError('invalidNumberLength')">
+                            Mobile number length must be 10 numbers.
+                        </span>
+                    </div>
+                </div>
+                <div class="col-12" *ngIf="isUserType">
+                    <div class="form-floating mb-4">
+                        <select formControlName="userType" (change)="onUserChange(userForm.controls['userType'].value)" class="form-select">
+                            <option value="">---Select---</option>
+                            <option *ngFor="let user of userTypeList" [ngValue]="user.dataID">
+                                {{user.dataName}}</option>
+                        </select>
+                        <label class="mandatory">User Type :</label>
+                        <span class="text-error" *ngIf="showError('userType')">{{required}}</span>
+                    </div>
+                </div>
+                <div class="col-12"  *ngIf="isExternal">
+                    <div class="form-floating mb-4">
+                        <select formControlName="externalType" class="form-select" ngre>
+                            <option value="">--Select External Type--</option>
+                            <option *ngFor="let sub of subContractorTypeList" [ngValue]="sub.subContractorID">
+                                {{sub.subContractorName}}</option>
+                        </select>
+                        <label class="mandatory">External Type :</label>
+                        <span class="text-error" *ngIf="showError('externalType')">{{required}}</span>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="mb-4">
+                        <div class="file-upload">
+                            <label class="mandatory">Profile Upload</label>
+                            <div class="file-upload-wrapper" #fileName>
+                                <input type="file" class="file-upload-field" title="Browse"
+                                    (click)="onFilechange($event)" (change)="onFilechange($event)" />
+                            </div>
+                            <div class="file-upload-icon">
+                                <span class="material-symbols-outlined">upload</span>
+                            </div>
+                        </div>
+                        <span class="text-error" *ngIf="uploadErrorMessage">{{required}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slide-form-footer">
+            <button class="slide-form-btn fade-in-up-2" type="button" (click)="clear()">{{clearButtonTitle}}</button>
+            <button class="slide-form-btn active fade-in-up-1" type="submit"
+                (click)="saveUser(userForm.valid && !uploadErrorMessage && (this.fileUpload || this.userData.editUserInformation))">{{saveButtonTitle}}
+            </button>
+        </div>
+    </div>
+</form>

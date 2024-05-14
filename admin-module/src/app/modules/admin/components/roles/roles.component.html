@@ -1,0 +1,55 @@
+<div class="bms-form">
+    <div class="bms-form-header">
+        <div class="bms-form-header-left">
+            <div class="bms-form-header-title">{{screenTitle}}</div>
+        </div>
+        <div class="bms-form-header-right">
+            <button class="bms-form-header-btn fade-in-right" value="Open" (click)="addRoleData()"
+                [disabled]="!authService.writePermission">Add {{screenTitle}}</button>
+        </div>
+    </div>
+    <div class="bms-form-body">
+        <app-vna-bms-common-stats [stats]="statsData" [displayHeaders]="displayHeaders"></app-vna-bms-common-stats>
+        <form [formGroup]="rolesSearchForm">
+            <div class="filter-block">
+                <div class="row fade-in">
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="form-group">
+                            <label>Role Name</label>
+                            <input id="table-filtering-search" class="form-control" type="text" placeholder="Enter"
+                                formControlName="roleName" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="form-group">
+                            <label>Role Acronym</label>
+                            <input id="table-filtering-search" class="form-control" type="text" placeholder="Enter"
+                                formControlName="roleAcronym" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-4 col-lg-3">
+                        <div class="form-btn-group-md">
+                            <button class="form-btn" type="reset" (click)="clearRolesForm()">
+                                Clear
+                            </button>
+                            <button class="form-btn active" (click)="searchRolesData()">
+                                <i class="fas fa-search"></i> Search
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+        <div class="d-flex justify-content-end mb-2">
+            <app-common-export-dropdown (exportOperation)="exportDropDownOperation($event)">
+            </app-common-export-dropdown>
+        </div>
+
+        <app-vna-bms-common-grid [gridData]="screenData" [displayedColumns]="displayedColumns"
+            (operation)="checkOperation($event)" [displayTitles]="displayTitles"
+            [recordsLength]="recordsPaginationLength" [showStatus]="showStatus"
+            [showEdit]="showEdit"></app-vna-bms-common-grid>
+
+    </div>
+</div>
